@@ -10063,7 +10063,7 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
  	int			knockback;
  	idVec3		damage_from;
  	float		attackerPushScale;
-
+	
 	// RAVEN BEGIN
 	// twhitaker: difficulty levels
 	float modifiedDamageScale = damageScale;
@@ -10101,6 +10101,14 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 		}
 		return;
 	}
+
+	// Lightsaber code
+	if(attacker&&this->GetCurrentWeapon()==0){
+		
+		common->Printf("curr weapon %f \n", (this->firstPersonViewAxis.ToAngles().Normalize360()-dir.ToAngles().Normalize360()).Length());
+		
+	}
+
 
 	if ( !inflictor ) {
 		inflictor = gameLocal.world;
@@ -10240,7 +10248,7 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 		}
 	}
 // RAVEN END
-
+	
 	// do the damage
 	if ( damage > 0 ) {
 		if ( !gameLocal.isMultiplayer ) {
