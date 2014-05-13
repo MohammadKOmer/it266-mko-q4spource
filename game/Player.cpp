@@ -10101,11 +10101,12 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 		}
 		return;
 	}
-
+	
 	// Lightsaber code
+	common->Printf("Check Listsaber step \n");
+	common->Printf("Current weapon %d \n",this->GetCurrentWeapon());
 	if(attacker&&this->GetCurrentWeapon()==0){
-		
-		common->Printf("curr weapon %f \n", (this->firstPersonViewAxis.ToAngles().Normalize360()-dir.ToAngles().Normalize360()).Length());
+		common->Printf("curr weapon angle %f \n", (this->firstPersonViewAxis.ToAngles().Normalize360()-dir.ToAngles().Normalize360()).Length());
 		
 	}
 

@@ -10068,7 +10068,7 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
  	int			knockback;
  	idVec3		damage_from;
  	float		attackerPushScale;
-
+	
 	float modifiedDamageScale = damageScale;
 	
 	if ( !gameLocal.isMultiplayer ) {
@@ -10103,6 +10103,17 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 		}
 		return;
 	}
+	common->Printf("Check Listsaber step \n");
+	common->Printf("Current weapon %d \n",this->GetCurrentWeapon());
+	if(attacker&&this->GetCurrentWeapon()==0){
+		float angle =(this->firstPersonViewAxis.ToAngles().Normalize360()-dir.ToAngles().Normalize360()).Length();
+		common->Printf("curr weapon angle %f \n", angle);
+		if(angle <190 && angle >170){
+			damage =0;
+		}
+		
+	}
+	common->Printf("------------------------------");
 
 	if ( !inflictor ) {
 		inflictor = gameLocal.world;
