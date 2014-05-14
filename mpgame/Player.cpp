@@ -336,7 +336,7 @@ void idInventory::RestoreInventory( idPlayer *owner, const idDict &dict ) {
 	maxHealth		= dict.GetInt( "maxhealth", "100" );
 	armor			= dict.GetInt( "armor", "50" );
 	maxarmor		= dict.GetInt( "maxarmor", "100" );
-
+	
 	// ammo
 	for( i = 0; i < MAX_AMMOTYPES; i++ ) {
 		name = rvWeapon::GetAmmoNameForIndex ( i );
@@ -1348,6 +1348,13 @@ idPlayer::idPlayer() {
 	clientIdealWeaponPredictFrame = -1;
 	serverReceiveEvent = false;
 }
+///get force powers
+float idPlayer::GetForcePower(){
+	return forcePower;
+}
+void idPlayer::UseForce(float use){
+	forcePower-=use;
+}	
 
 /*
 ==============
@@ -9301,7 +9308,8 @@ Called every tic for each player
 */
 void idPlayer::Think( void ) {
 	renderEntity_t *headRenderEnt;
-
+	common->Printf("Current force %d \n",this->GetForcePower());
+	common->Printf("Current weapon %d \n",this->GetCurrentWeapon());
 	if ( talkingNPC ) {
 		if ( !talkingNPC.IsValid() ) {
 			talkingNPC = NULL;
@@ -9657,7 +9665,11 @@ void idPlayer::Think( void ) {
 		}
 		common->DPrintf( "%d: enemies\n", num );
 	}
-
+	if(forcePower<100){
+		forcePower+=5;	
+	}if(forcePower>100){
+		forcePower=100;
+	}
 	if ( !inBuyZonePrev )
 		inBuyZone = false;
 
@@ -10070,6 +10082,17 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
  	float		attackerPushScale;
 	
 	float modifiedDamageScale = damageScale;
+	if (attacker&& attacker->IsType( idPlayer::Type ) ) {
+			if(static_cast<idPlayer*>(attacker)->GetCurrentWeapon()==7||static_cast<idPlayer*>(attacker)->GetCurrentWeapon()==8||static_cast<idPlayer*>(attacker)->GetCurrentWeapon()==5){
+				if(static_cast<idPlayer*>(attacker)->GetForcePower()<25){
+					return;
+				}
+				else
+				{
+					static_cast<idPlayer*>(attacker)->UseForce(25);
+				}
+			}
+	}
 	
 	if ( !gameLocal.isMultiplayer ) {
 		if ( inflictor != gameLocal.world ) {
@@ -10169,9 +10192,13 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 				// since default attackerDamageScale is 0.5, default attackerPushScale should be 2
 				damageDef->dict.GetFloat( "attackerPushScale", "2", attackerPushScale );
 			}
-		
+			
 			kick = dir;
-
+			if ( attacker->IsType( idPlayer::Type ) ) {
+				if(static_cast<idPlayer*>(attacker)->GetCurrentWeapon()==7){
+					kick.Set(-kick.x,-kick.y,-kick.z);
+				}	
+			}
 			kick.Normalize();
  			kick *= g_knockback.GetFloat() * knockback * attackerPushScale / 200.0f;
 			

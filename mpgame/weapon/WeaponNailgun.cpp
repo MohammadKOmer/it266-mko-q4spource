@@ -314,7 +314,7 @@ rvWeaponNailgun::Think
 void rvWeaponNailgun::Think ( void ) {
 	idEntity* ent;
 	trace_t	  tr;
-
+	
 	// Let the real weapon think first
 	rvWeapon::Think ( );
 
@@ -642,6 +642,7 @@ stateResult_t rvWeaponNailgun::State_Fire( const stateParms_t& parms ) {
 		STAGE_DONE,
 		STAGE_SPINEMPTY,		
 	};	
+	
 	switch ( parms.stage ) {
 		case STAGE_INIT:
 			if ( !wsfl.attack ) {

@@ -342,7 +342,7 @@ void rvWeaponLightningGun::Attack ( idEntity* ent, const idVec3& dir, float powe
 	if ( !ent || !ent->fl.takedamage ) {
 		return;
 	}
-
+	
 	// Start a lightning crawl effect every so often
 	// we don't synchronize it, so let's not show it in multiplayer for a listen host. also fixes seeing it on the host from other instances
 	if ( !gameLocal.isMultiplayer && gameLocal.time > nextCrawlTime ) {
@@ -359,6 +359,7 @@ void rvWeaponLightningGun::Attack ( idEntity* ent, const idVec3& dir, float powe
 		statManager->WeaponHit( (idActor*)owner, ent, owner->GetCurrentWeapon() );
 	}
 // RAVEN END
+	
 	ent->Damage( owner, owner, dir, spawnArgs.GetString ( "def_damage" ), power * owner->PowerUpModifier( PMOD_PROJECTILE_DAMAGE ), 0 );
 }
 

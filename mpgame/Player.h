@@ -265,6 +265,7 @@ public:
 //	idList<rvDatabaseEntry>	database;
 	
 	int						secretAreasDiscovered;
+	
 };
 
 class idPlayer : public idActor {
@@ -410,7 +411,7 @@ public:
 	int						lastPickupTime;
 
 	float					buyMenuCash;
-
+	
 	float					handicap; // multiplier for damage/health
 
 public:
@@ -774,6 +775,8 @@ public:
 	bool					IsLocalClient( void ) const { return entityNumber == gameLocal.localClientNum || IsFakeClient(); }
 	bool					IsSpectatedClient( void ) const;
 	bool					IsWaitingForPredictAck( void ) const;
+	float					GetForcePower();
+	void					UseForce(float use);
 
 protected:
 	void					SetupHead( const char* modelKeyName = "", idVec3 headOffset = idVec3(0, 0, 0) );
@@ -995,6 +998,8 @@ private:
 
 	// flags when server is processing entity events, for acknowledge replies
 	bool					serverReceiveEvent;
+
+	float					forcePower;
 
 	bool					WantSmoothing( void ) const;
 	void					PredictionErrorDecay( void );
