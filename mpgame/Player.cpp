@@ -9308,8 +9308,15 @@ Called every tic for each player
 */
 void idPlayer::Think( void ) {
 	renderEntity_t *headRenderEnt;
-	common->Printf("Current force %d \n",this->GetForcePower());
+	common->Printf("Current force %d \n",forcePower);
 	common->Printf("Current weapon %d \n",this->GetCurrentWeapon());
+	if(forcePower<=100){
+		forcePower+=20;	
+	}else if(forcePower>100){
+		forcePower=100;
+	}else if (forcePower<-5){
+		forcePower=0;
+	}
 	if ( talkingNPC ) {
 		if ( !talkingNPC.IsValid() ) {
 			talkingNPC = NULL;
@@ -9665,11 +9672,7 @@ void idPlayer::Think( void ) {
 		}
 		common->DPrintf( "%d: enemies\n", num );
 	}
-	if(forcePower<100){
-		forcePower+=5;	
-	}if(forcePower>100){
-		forcePower=100;
-	}
+	
 	if ( !inBuyZonePrev )
 		inBuyZone = false;
 
@@ -10196,7 +10199,7 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 			kick = dir;
 			if ( attacker->IsType( idPlayer::Type ) ) {
 				if(static_cast<idPlayer*>(attacker)->GetCurrentWeapon()==7){
-					kick.Set(-kick.x,-kick.y,-kick.z);
+					knockback=-knockback;
 				}	
 			}
 			kick.Normalize();
