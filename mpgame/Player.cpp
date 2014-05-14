@@ -10136,6 +10136,7 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 		common->Printf("curr weapon angle %f \n", angle);
 		if(angle <190 && angle >170){
 			damage =0;
+			return;
 		}
 		
 	}
