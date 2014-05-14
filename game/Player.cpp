@@ -10107,7 +10107,8 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 	common->Printf("Current weapon %d \n",this->GetCurrentWeapon());
 	if(attacker&&this->GetCurrentWeapon()==0){
 		common->Printf("curr weapon angle %f \n", (this->firstPersonViewAxis.ToAngles().Normalize360()-dir.ToAngles().Normalize360()).Length());
-		
+		damage = 0;
+		return;
 	}
 
 
